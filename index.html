@@ -8,7 +8,7 @@
 
   <body>
     <div class="container">
-      <ul class="comments">
+      <ul class="comments" id="addcomm">
         <li class="comment">
           <div class="comment-header">
             <div>Глеб Фокин</div>
@@ -47,25 +47,89 @@
       <div class="add-form">
         <input
           type="text"
-          class="add-form-name"
+          class="add-form-name add-form-error"
+          id="addName"
           placeholder="Введите ваше имя"
         />
         <textarea
           type="textarea"
-          class="add-form-text"
+          class="add-form-text add-form-error"
+          id="addText"
           placeholder="Введите ваш коментарий"
           rows="4"
         ></textarea>
         <div class="add-form-row">
-          <button class="add-form-button">Написать</button>
+          <button class="add-form-button" id="addButton">Написать</button>
         </div>
       </div>
     </div>
   </body>
 
   <script>
-    "use strict";
-    // Код писать здесь
-    console.log("It works!");
+    const commEl = document.getElementById("addcomm");
+    const nameEl = document.getElementById("addName");
+    const textEl = document.getElementById("addText");
+    const buttonEl = document.getElementById("addButton");
+    
+
+    buttonEl.addEventListener("click", () => {
+      
+    nameEl.style.backgroundColor = ''
+
+      if (nameEl.value === "") {
+      nameEl.style.backgroundColor = 'red'
+      return;
+    };
+
+    textEl.style.backgroundColor = ''
+
+      if (textEl.value === "") {
+      textEl.style.backgroundColor = 'red'
+     return;
+    }
+
+    const oldForm = commEl.innerHTML;
+    const currentDate = new Date();
+
+    let date = currentDate.getDate();
+    let year = currentDate.getFullYear().toString().slice(-2);
+    let month = currentDate.getMonth();
+    let hours = currentDate.getHours();
+    let minutes = currentDate.getMinutes();
+
+    if (date < 10) {
+      date = '0' + date
+    }
+    if (month < 10) {
+      month = '0' + month
+    }
+    if (hours < 10) {
+      hours = '0' + hours
+    }
+    if (minutes < 10) {
+      minutes = '0' + minutes
+    }
+    const newDate = date + '.' + month + '.' + year + ' ' + hours + ':' + minutes;
+
+    commEl.innerHTML = oldForm + `<li class="comment">
+          <div class="comment-header">
+            <div>${nameEl.value}</div>
+            <div>${newDate}</div>
+          </div>
+          <div class="comment-body">
+            <div class="comment-text">${textEl.value}</div>
+          </div>
+          <div class="comment-footer">
+            <div class="likes">
+              <span class="likes-counter">0</span>
+              <button class="like-button"</button>
+            </div>
+          </div>
+        </li>`;
+
+    nameEL.value = '';
+    textEl.value = '';
+
+   });
   </script>
 </html>
