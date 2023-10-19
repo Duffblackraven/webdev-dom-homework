@@ -31,6 +31,7 @@
       </div>
     </div>
   </body>
+  
   <style>
     .error {
       background-color: firebrick;
@@ -56,18 +57,30 @@
       date:`13.02.22 19:22`,
       comment: `Мне нравится как оформлена эта страница! ❤`,
       like: 75,
-      isLiked: false
+      isLiked: true
     }
   ]; 
+
+const replyToComment = () => {
+
+  const newComms = document.querySelectorAll('.comment');
+
+    for (const newComm of newComms) {
+
+      newComm.addEventListener ('click', () => {
+      textEl.value = `${newComm.dataset.text} ${newComm.dataset.username}`
+      });
+    }
+  }
 
   const initEventListener = () => {
       const likesButton = document.querySelectorAll('.like-button');
 
       for (const likeButtonEl of likesButton) {
 
-        likeButtonEl.addEventListener ('click', () => {
-
-          const index = likeButtonEl.dataset.index;
+        likeButtonEl.addEventListener ('click', (event) => {
+          event.stopPropagation();
+        const index = likeButtonEl.dataset.index;
 
           if (comments[index].isLiked === false) {
             comments[index].isLiked = true;
@@ -78,13 +91,15 @@
           }
           console.log(comments[index].isLiked)
           renderComments();
+          replyToComment();
         });
       }
     };
+    
 
       const renderComments = () => {
         const htmlLikes = comments.map((user, i) => {
-          return `<li class="comment">
+          return `<li class="comment" data-text="${user.comment}" data-username="${user.name}">
           <div class="comment-header">
             <div>${user.name}</div>
             <div>${user.date}</div>
@@ -103,9 +118,11 @@
         </li>`
       }).join('');
 
+      
       commEl.innerHTML = htmlLikes;
-      console.log(htmlLikes);
+      console.log(htmlLikes)
 
+      replyToComment();
       initEventListener();
     }
     renderComments();
@@ -152,12 +169,21 @@
     
 
     comments.push({
-      name: nameEl.value,
+      name: nameEl.value
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;"),
       date: newDate,
-      comment: textEl.value,
+      comment: textEl.value
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;"),
       like: 0,
       isLiked: false
     })
+
     renderComments();
 
     nameEl.value = '';
