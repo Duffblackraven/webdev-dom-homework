@@ -166,20 +166,21 @@ const replyToComment = () => {
     }
 
     const oldForm = commEl.innerHTML;
-    
+
+    const saveStringValue = (htmlString) => {
+      return htmlString
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+    };
+    saveStringValue(nameEl.value);
+    saveStringValue(textEl.value);
 
     comments.push({
-      name: nameEl.value
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;"),
+      name: saveStringValue(nameEl.value),
       date: newDate,
-      comment: textEl.value
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;"),
+      comment: saveStringValue(textEl.value),
       like: 0,
       isLiked: false
     })
