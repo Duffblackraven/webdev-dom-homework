@@ -135,3 +135,15 @@ body {
   .add-form-button:hover {
     opacity: 0.9;
   }
+  .delete-comment {
+    position: absolute;
+    right: 130px;
+    font-size: 16px;
+    padding: 7px 14px;
+    background-color: #bcec30;
+    border: none;
+    border-radius: 18px;
+  }
+  .delete-comment:hover {
+    opacity: 0.9;
+  }
