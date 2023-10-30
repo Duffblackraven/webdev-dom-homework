@@ -147,3 +147,9 @@ body {
   .delete-comment:hover {
     opacity: 0.9;
   }
+  .error {
+    background-color: firebrick;
+  }
+ .hidden {
+  display: none;
+ }
