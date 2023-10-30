@@ -41,21 +41,22 @@
     const nameEl = document.getElementById("addName");
     const textEl = document.getElementById("addText");
     const loaderEl = document.getElementById("pageLoader");
-    const loaderComm = document.getElementById("loadingAdd");
 
-    let isLoading = true;
 
     let comments = [];
 
     const getApi = () => {
       commEl.classList.add("hidden");
       loaderEl.classList.remove("hidden");
-    fetchPromise = fetch("https://wedev-api.sky.pro/api/v1/tatiana-ret/comments")
+
+    return fetchPromise = fetch("https://wedev-api.sky.pro/api/v1/tatiana-ret/comments", {
+      method: "GET"
+    })
     .then((response) => {
       return response.json();
     })
     .then((responseData) => {
-        //console.log (responseData)
+        console.log (responseData)
         arrayComments = responseData.comments.map((comment) => {
         return {
           name: comment.author.name,
@@ -76,7 +77,6 @@
     buttonEl.textContent = "Написать";
     }); 
   };
-
   getApi();
 
 
@@ -108,7 +108,7 @@ const replyToComment = () => {
             comments[index].isLiked = false;
             comments[index].like--;
           }
-          console.log(comments[index].isLiked)
+          //console.log(comments[index].isLiked)
           renderComments();
           replyToComment();
         });
@@ -132,7 +132,7 @@ const replyToComment = () => {
 
       const renderComments = () => {
         const htmlLikes = comments.map((user, i) => {
-          return `<li class="comment">
+          return `<li class="comment"data-text="${user.comment}" data-username="${user.name}">
           <div class="comment-header">
             <div class="comment=name">${user.name}</div>
             <div>${user.date}</div>
@@ -154,7 +154,7 @@ const replyToComment = () => {
 
       
       commEl.innerHTML = htmlLikes;
-      console.log(htmlLikes)
+      //console.log(htmlLikes)
 
       deleteCommentButton();
       replyToComment();
@@ -224,7 +224,7 @@ const replyToComment = () => {
     response.json()
   })
   .then((responseData) => {
-    getApi()
+    return getApi()
   });
     
     nameEl.value = '';
