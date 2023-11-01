@@ -8,7 +8,10 @@
 
   <body>
     <div class="container">
-      <ul class="comments" id="addcomm">
+      <div id="pageLoader" class="hidden">
+        <p>Страница загружается...</p>
+      </div>
+      <ul class="comments" id="addComm">
         <!--список js-->
       </ul>
       <div class="add-form">
@@ -32,47 +35,29 @@
     </div>
   </body>
   
-  <style>
-    .error {
-      background-color: firebrick;
-    }
-  </style>
-
   <script>
-    const commEl = document.getElementById("addcomm");
+    const commEl = document.getElementById("addComm");
     const buttonEl = document.getElementById("addButton");
     const nameEl = document.getElementById("addName");
     const textEl = document.getElementById("addText");
+    const loaderEl = document.getElementById("pageLoader");
+
 
     let comments = [];
-    
-//    {
-//      name: `Глеб Фокин`,
-//      date:`12.02.22 12:18`,
-//      comment: `Это будет первый комментарий на этой странице`,
-//      like: 3,
-//      isLiked: false
-//    },
-//      {
-//      name: `Варвара Н.`,
-//      date:`13.02.22 19:22`,
-//      comment: `Мне нравится как оформлена эта страница! ❤`,
-//      like: 75,
-//      isLiked: true
-//    }
 
     const getApi = () => {
-      const fetchPromise = fetch("https://wedev-api.sky.pro/api/v1/tatiana-ret/comments", {
+      commEl.classList.add("hidden");
+      loaderEl.classList.remove("hidden");
+
+    return fetchPromise = fetch("https://wedev-api.sky.pro/api/v1/tatiana-ret/comments", {
       method: "GET"
-    });
-
-    fetchPromise.then((response) => {
-      const jsonPromise = response.json();
-
-      jsonPromise.then((responseData) => {
-        console.log (responseData);
-
-      const arrayComments = responseData.comments.map((comment) => {
+    })
+    .then((response) => {
+      return response.json();
+    })
+    .then((responseData) => {
+        console.log (responseData)
+        arrayComments = responseData.comments.map((comment) => {
         return {
           name: comment.author.name,
           date: new Date(comment.date).toLocaleString(),
@@ -83,12 +68,17 @@
       });
       comments = arrayComments;
       renderComments();
-      });
-    });
-  }
-
+      console.log(arrayComments);
+    })
+    .then(() => {
+    commEl.classList.remove("hidden");
+    loaderEl.classList.add("hidden");
+    buttonEl.disabled = false;
+    buttonEl.textContent = "Написать";
+    }); 
+  };
   getApi();
-    
+
 
 const replyToComment = () => {
 
@@ -118,7 +108,7 @@ const replyToComment = () => {
             comments[index].isLiked = false;
             comments[index].like--;
           }
-          console.log(comments[index].isLiked)
+          //console.log(comments[index].isLiked)
           renderComments();
           replyToComment();
         });
@@ -127,9 +117,11 @@ const replyToComment = () => {
 
     const deleteCommentButton = () => {
       const deleteComments = document.querySelectorAll('.delete-comment');
+
       for (const deleteComment of deleteComments) {
         deleteComment.addEventListener("click", (event) => {
           event.stopPropagation();
+
           const index = deleteComment.dataset.index;
           comments.splice(index, 1);
           renderComments();
@@ -140,9 +132,9 @@ const replyToComment = () => {
 
       const renderComments = () => {
         const htmlLikes = comments.map((user, i) => {
-          return `<li class="comment" data-text="${user.comment}" data-username="${user.name}">
+          return `<li class="comment"data-text="${user.comment}" data-username="${user.name}">
           <div class="comment-header">
-            <div>${user.name}</div>
+            <div class="comment-name">${user.name}</div>
             <div>${user.date}</div>
           </div>
           <div class="comment-body">
@@ -209,40 +201,31 @@ const replyToComment = () => {
      return;
     }
 
-    const oldForm = commEl.innerHTML;
+    buttonEl.disabled = true;
+    buttonEl.textContent = "Добавляем..."
 
-    const saveStringValue = (htmlString) => {
-      return htmlString
+   fetch("https://wedev-api.sky.pro/api/v1/tatiana-ret/comments", {
+
+    method: "POST",
+    body: JSON.stringify({
+      name: nameEl.value
         .replaceAll("&", "&amp;")
         .replaceAll("<", "&lt;")
         .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;");
-    };
-    saveStringValue(nameEl.value);
-    saveStringValue(textEl.value);
-
-//    comments.push({
-//      name: saveStringValue(nameEl.value),
-//      date: newDate,
-//      comment: saveStringValue(textEl.value),
-//      like: 0,
-//      isLiked: false
-//    })
-
-//    renderComments();
-
-    const postComments = fetch("https://wedev-api.sky.pro/api/v1/tatiana-ret/comments", {
-      method: "POST",
-      body: JSON.stringify({
-        name: nameEl.value,
-        text: textEl.value
-      }),
-    });
-    postComments.then((res) => {
-      getApi();
-    });
-    renderComments();
-    deleteCommentButton();
+        .replaceAll('"', "&quot;"),
+      text: textEl.value
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;"),
+    })
+  })
+  .then((response) => {
+    response.json()
+  })
+  .then((responseData) => {
+    return getApi()
+  });
     
     nameEl.value = '';
     textEl.value = '';
