@@ -218,17 +218,41 @@ const replyToComment = () => {
         .replaceAll("<", "&lt;")
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;"),
+      forseError: true,
     })
   })
   .then((response) => {
-    response.json()
+    console.log(response.status);
+//    if (response.status === 201) {
+//      return response.json();
+//    }
+    if (response.status === 400) {
+      throw new Error('Ошибка ввода');
+    } 
+    if (response.status === 500) {
+      throw new Error('Ошибка на сервере');
+    }
+    else {
+      //alert ('Доступ к тайнам человечества закрыт, попробуйте позже');
+      throw new Error ('Доступ к тайнам человечества закрыт, попробуйте позже');
+    }
   })
-  .then((responseData) => {
-    return getApi()
-  });
-    
+  .catch((error)=> {
+    if (error.message === 'Failed to fetch') {
+      alert ('Ошибка интернет соединения, попробуйте позже')
+    } 
+    if (error.message === 'Ошибка ввода') {
+      alert ('Ошибка колличества символов в имени/комментарии... Пожалуйста, введите не менее 3х символов')
+    } 
+    if (error.message === 'Ошибка на сервере') {
+      alert ('Ошибка на сервере, возвращайтесь позже')
+    }
+  })
+  .then(() => {
+    return getApi();
     nameEl.value = '';
     textEl.value = '';
+  })
 });
   </script>
 </html>
