@@ -49,9 +49,8 @@
       commEl.classList.add("hidden");
       loaderEl.classList.remove("hidden");
 
-    return fetchPromise = fetch("https://wedev-api.sky.pro/api/v1/tatiana-ret/comments", {
-      method: "GET"
-    })
+    return fetch("https://wedev-api.sky.pro/api/v1/tatiana-ret/comments",)
+
     .then((response) => {
     if (response.status === 500) {
       throw new Error('Ошибка на сервере')
@@ -71,7 +70,7 @@
       });
       comments = arrayComments;
       renderComments();
-      console.log(arrayComments);
+      //console.log(arrayComments);
     })
     .then(() => {
     commEl.classList.remove("hidden");
@@ -84,7 +83,7 @@
       alert (error.message);
     }
   })
-  };
+};
   getApi();
 
 
@@ -259,6 +258,9 @@ const replyToComment = () => {
     }
     buttonEl.disabled = false;
     buttonEl.textContent = "Написать";
+  })
+  .then(() => {
+    return getApi();
   })
 });
   </script>
