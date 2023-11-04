@@ -230,7 +230,8 @@ const replyToComment = () => {
   })
   .then((response) => {
     console.log(response.status);
-    if (response.status === 400) {
+    if (!response.ok) {
+      if (response.status === 400) {
       throw new Error('Ошибка ввода');
     } 
     if (response.status === 500) {
@@ -239,6 +240,7 @@ const replyToComment = () => {
     else {
       //alert ('Доступ к тайнам человечества закрыт, попробуйте позже');
       throw new Error ('Доступ к тайнам человечества закрыт, попробуйте позже');
+      }
     }
   })
   .then(() => {
@@ -256,11 +258,10 @@ const replyToComment = () => {
     if (error.message === 'Ошибка на сервере') {
       alert ('Ошибка на сервере, возвращайтесь позже')
     }
+  })
+  .finally(() => {
     buttonEl.disabled = false;
     buttonEl.textContent = "Написать";
-  })
-  .then(() => {
-    return getApi();
   })
 });
   </script>
