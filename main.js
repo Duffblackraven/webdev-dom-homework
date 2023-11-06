@@ -1,3 +1,4 @@
+import { getFetchApi, postFetchApi } from "./Api.js";
 
 const commEl = document.getElementById("addComm");
 const buttonEl = document.getElementById("addButton");
@@ -12,16 +13,7 @@ const getApi = () => {
   commEl.classList.add("hidden");
   loaderEl.classList.remove("hidden");
 
-return fetch("https://wedev-api.sky.pro/api/v1/tatiana-ret/comments", {
-    method: "GET"
-})
-
-.then((response) => {
-if (response.status === 500) {
-  throw new Error('Ошибка на сервере')
-}
-  return response.json();
-})
+getFetchApi()
 .then((responseData) => {
     console.log (responseData)
     const arrayComments = responseData.comments.map((comment) => {
@@ -176,23 +168,7 @@ textEl.classList.remove('error');
 buttonEl.disabled = true;
 buttonEl.textContent = "Добавляем..."
 
-fetch("https://wedev-api.sky.pro/api/v1/tatiana-ret/comments", {
-
-method: "POST",
-body: JSON.stringify({
-  name: nameEl.value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;"),
-  text: textEl.value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;"),
-  forceError: true
-})
-})
+postFetchApi(nameEl, textEl)
 .then((response) => {
 console.log(response.status);
 if (!response.ok) {
