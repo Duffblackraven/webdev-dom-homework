@@ -28,7 +28,7 @@ getFetchApi()
     };
   });
   commentsArr = arrayComments;
-  renderComms(commEl, commentsArr, textEl);
+  renderComms({commEl, commentsArr, replyToComment, initEventListener, deleteCommentButton});
   //console.log(arrayComments);
 })
 .then(() => {
@@ -36,14 +36,61 @@ commEl.classList.remove("hidden");
 loaderEl.classList.add("hidden");
 })
 .catch((error)=> {
-if (error.message === 'Failed to fetch') {
-  alert ('Ошибка интернет соединения, попробуйте позже')
-} else {
-  alert (error.message);
-}
-})
+    if (error.message === 'Failed to fetch') {
+    alert ('Ошибка интернет соединения, попробуйте позже')
+    } else {
+    alert (error.message);
+    }
+  })
 };
 getApi();
+
+const replyToComment = () => {
+
+    const newComms = document.querySelectorAll('.comment');
+    
+    for (const newComm of newComms) {
+    
+      newComm.addEventListener ('click', () => {
+      textEl.value = `${newComm.dataset.text} ${newComm.dataset.username}`
+      });
+     }
+    };
+    const initEventListener = () => {
+        const likesButton = document.querySelectorAll('.like-button');
+      
+        for (const likeButtonEl of likesButton) {
+      
+          likeButtonEl.addEventListener ('click', (event) => {
+            event.stopPropagation();
+          const index = likeButtonEl.dataset.index;
+      
+            if (commentsArr[index].isLiked === false) {
+              commentsArr[index].isLiked = true;
+              commentsArr[index].like++;
+            } else {
+              commentsArr[index].isLiked = false;
+              commentsArr[index].like--;
+            }
+            //console.log(commentsArr[index].isLiked)
+            renderComms({commEl, commentsArr, replyToComment, initEventListener, deleteCommentButton});
+          });
+        }
+      };
+      const deleteCommentButton = () => {
+        const deleteComments = document.querySelectorAll('.delete-comment');
+      
+        for (const deleteComment of deleteComments) {
+          deleteComment.addEventListener("click", (event) => {
+            event.stopPropagation();
+      
+            const index = deleteComment.dataset.index;
+            commentsArr.splice(index, 1);
+            renderComms({commEl, commentsArr, replyToComment, initEventListener, deleteCommentButton});
+          });
+        }
+      };
+renderComms({commEl, commentsArr, replyToComment, initEventListener, deleteCommentButton});
 
 buttonEl.addEventListener("click", () => {
 
