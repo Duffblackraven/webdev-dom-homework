@@ -1,5 +1,5 @@
 
-export const renderComms = (commEl, commentsArr) => {
+export const renderComms = (commEl, commentsArr, textEl) => {
     const renderComments = () => {
         return (commEl.innerHTML = commentsArr.map((user, i) => {
           return `<li class="comment"data-text="${user.comment}" data-username="${user.name}">
@@ -23,44 +23,55 @@ export const renderComms = (commEl, commentsArr) => {
       })
       .join(''));
     }
-   
-    const deleteCommentButton = () => {
-        const deleteComments = document.querySelectorAll('.delete-comment');
-      
-        for (const deleteComment of deleteComments) {
-          deleteComment.addEventListener("click", (event) => {
-            event.stopPropagation();
-      
-            const index = deleteComment.dataset.index;
-            comments.splice(index, 1);
-            renderComments();
-          });
-        }
-      };
-      const initEventListener = () => {
-        const likesButton = document.querySelectorAll('.like-button');
-      
-        for (const likeButtonEl of likesButton) {
-      
-          likeButtonEl.addEventListener ('click', (event) => {
-            event.stopPropagation();
-          const index = likeButtonEl.dataset.index;
-      
-            if (comments[index].isLiked === false) {
-              commentsArr[index].isLiked = true;
-              commentsArr[index].like++;
-            } else {
-              commentsArr[index].isLiked = false;
-              commentsArr[index].like--;
-            }
-            //console.log(comments[index].isLiked)
-            renderComments();
-            replyToComment();
-          });
-        }
-      };
+    const replyToComment = () => {
 
+      const newComms = document.querySelectorAll('.comment');
+      
+      for (const newComm of newComms) {
+      
+        newComm.addEventListener ('click', () => {
+        textEl.value = `${newComm.dataset.text} ${newComm.dataset.username}`
+        });
+       }
+      }
+
+    const initEventListener = () => {
+      const likesButton = document.querySelectorAll('.like-button');
+    
+      for (const likeButtonEl of likesButton) {
+    
+        likeButtonEl.addEventListener ('click', (event) => {
+          event.stopPropagation();
+        const index = likeButtonEl.dataset.index;
+    
+          if (commentsArr[index].isLiked === false) {
+            commentsArr[index].isLiked = true;
+            commentsArr[index].like++;
+          } else {
+            commentsArr[index].isLiked = false;
+            commentsArr[index].like--;
+          }
+          console.log(commentsArr[index].isLiked)
+          renderComments();
+          replyToComment();
+        });
+      }
+    };
+    const deleteCommentButton = () => {
+      const deleteComments = document.querySelectorAll('.delete-comment');
+    
+      for (const deleteComment of deleteComments) {
+        deleteComment.addEventListener("click", (event) => {
+          event.stopPropagation();
+    
+          const index = deleteComment.dataset.index;
+          commentsArr.splice(index, 1);
+          renderComments();
+        });
+      }
+    };
+    renderComments();
     deleteCommentButton();
     initEventListener();
-    renderComments();
+    replyToComment();
 }

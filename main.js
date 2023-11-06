@@ -1,4 +1,5 @@
 import { getFetchApi, postFetchApi } from "./Api.js";
+import { getCorrectDate } from "./GetDate.js";
 import { renderComms } from "./RenderComms.js";
 
 const commEl = document.getElementById("addComm");
@@ -20,14 +21,15 @@ getFetchApi()
     const arrayComments = responseData.comments.map((comment) => {
     return {
       name: comment.author.name,
-      date: new Date(comment.date).toLocaleString(),
+      date: getCorrectDate(comment.date),
       comment: comment.text,
       like: comment.likes,
       isLiked: false
     };
   });
   commentsArr = arrayComments;
-  renderComms(commEl, commentsArr)
+  renderComms(commEl, commentsArr, textEl);
+  //console.log(arrayComments);
 })
 .then(() => {
 commEl.classList.remove("hidden");
@@ -43,22 +45,7 @@ if (error.message === 'Failed to fetch') {
 };
 getApi();
 
-
-const replyToComment = () => {
-
-const newComms = document.querySelectorAll('.comment');
-
-for (const newComm of newComms) {
-
-    newComm.addEventListener ('click', () => {
-    textEl.value = `${newComm.dataset.text} ${newComm.dataset.username}`
-    });
-  }
-}
-
 buttonEl.addEventListener("click", () => {
-
-
 
 nameEl.classList.remove('error');
 
