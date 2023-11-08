@@ -128,7 +128,7 @@ else {
 }
 })
 .then(() => {
-return getApi();
+getApi();
 nameEl.value = '';
 textEl.value = '';
 })
