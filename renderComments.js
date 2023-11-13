@@ -36,7 +36,7 @@ export const renderComms = ({ comments }) => {
   <ul id="list" class="comments">${commentsHtml}</ul>
   <div id="add-loader-comment" class="add-loader-comment">Комментарий добавляется...</div>
   <div class="add-form" id="add-form">
-    <input id="name-input" type="text" class="add-form-name" placeholder=${userName} />
+    <input id="name-input" type="text" value="${userName}" readonly="readonly" class="add-form-name"  />
     <textarea id="text-input" type="textarea" class="add-form-text" placeholder="Введите ваш коментарий" rows="4"></textarea>
     <div class="add-form-row">
       <button id="comment-button" class="add-form-button">Написать</button>

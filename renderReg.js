@@ -29,7 +29,7 @@ export const renderReg = () => {
     });
 
     const nameInput = document.querySelector(".add-form-name");
-    const loginInputElement = document.querySelector(".add-form-name");
+    const loginInputElement = document.getElementById("login-input");
     const passwordInputElement = document.querySelector(".add-form-text");
 
     const regButtonElement = document.getElementById("register-button");
@@ -41,10 +41,10 @@ export const renderReg = () => {
             password: passwordInputElement.value,
         })
         .then((responseData) => {
-            console.log(token);
+            //console.log(token);
             setToken(responseData.user.token);
             setUserName(responseData.user.name);
-            console.log(userName);
+            //console.log(userName);
         })
         .then(() => {
             renderComments({ getRenderComments });

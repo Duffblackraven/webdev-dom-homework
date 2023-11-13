@@ -1,4 +1,4 @@
-const baseURL = "https://wedev-api.sky.pro/api/v1/tatiana-ret/comments";
+const baseURL = "https://wedev-api.sky.pro/api/v2/tatiana-ret/comments";
 const authorizURL = "https://wedev-api.sky.pro/api/user/login";
 const regURL = "https://wedev-api.sky.pro/api/user";
 
@@ -20,9 +20,9 @@ export const getFetchApi = () => {
        },
     }).then((response) => {
       if (response.status === 401) {
-         token = prompt('Введите верный пароль');
+         token = prompt("Введите верный пароль");
          getFetchApi();
-         throw new Error('Вы не авторизованы');
+         throw new Error("Вы не авторизованы");
        }
        return response.json();
      });
@@ -53,9 +53,11 @@ export const postFetchApi = ({ text, name, date }) => {
       .then((response) => {
           console.log(response);
           if (response.status === 500) {
+            alert("Сервер сломался")
              throw new Error("Сервер сломался");
           }
           if (response.status === 400) {
+            alert("Плохой запрос")
              throw new Error("Плохой запрос");
           }
           else {
@@ -71,9 +73,11 @@ export const login = ({ login, password }) => {
       login,
       password,
       }),
-   }).then((response) => {
+   })
+   .then((response) => {
       console.log(response)
       if (response.status === 400) {
+        alert("Неправильный логин или пароль")
          throw new Error("Неправильный логин или пароль");
       } 
          return response.json();
@@ -88,10 +92,13 @@ export const registration = ({ login, password, name }) => {
       name,
       password,
       }),
-   }).then((response) => {
+   })
+   .then((response) => {
       console.log(response)
       if (response.status === 400) {
+        alert("Неверные данные")
          throw new Error("Неверные данные");
+         
       } 
          return response.json();
    });

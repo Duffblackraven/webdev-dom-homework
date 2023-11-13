@@ -23,7 +23,7 @@ export const renderLogin = () => {
   appElement.innerHTML = loginHtml;
 
 const logButtonElement = document.getElementById("login-button");
-const loginInputElement = document.querySelector(".add-form-name");
+const loginInputElement = document.querySelector("add-form-name-login");
 const passwordInputElement = document.querySelector(".add-form-text");
 
 const regLink = document.getElementById("registration");
