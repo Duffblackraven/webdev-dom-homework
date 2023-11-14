@@ -140,8 +140,9 @@ export const renderComms = ({ comments }) => {
 
  
    
-    const styleQuote = document.querySelector(".quote");
+  const styleQuote = document.querySelector(".quote");
   const commentsElements = document.querySelectorAll(".comment-text");
+  
   for (const commentElement of commentsElements) {
     commentElement.addEventListener("click", () => {
       const index = commentElement.dataset.index;
@@ -153,7 +154,6 @@ export const renderComms = ({ comments }) => {
       }
     });
   }
-
   likeEventButton ({ comments });
  
 };
