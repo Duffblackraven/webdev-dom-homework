@@ -1,4 +1,4 @@
-import { login, setToken, setUserName, token, userName } from "./api.js"
+import { login, setToken, setUserName, token, userName } from "./Api.js"
 import { getRenderComments } from "./main.js";
 import { renderReg } from "./renderReg.js";
 
@@ -23,7 +23,7 @@ export const renderLogin = () => {
   appElement.innerHTML = loginHtml;
 
 const logButtonElement = document.getElementById("login-button");
-const loginInputElement = document.querySelector("add-form-name-login");
+const loginInputElement = document.querySelector(".add-form-name-login");
 const passwordInputElement = document.querySelector(".add-form-text");
 
 const regLink = document.getElementById("registration");
@@ -33,6 +33,7 @@ regLink.addEventListener("click", () => {
 
 
 logButtonElement.addEventListener("click", () => {
+ 
     login({
         login: loginInputElement.value,
         password: passwordInputElement.value,

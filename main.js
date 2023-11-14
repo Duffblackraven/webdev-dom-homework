@@ -1,4 +1,4 @@
-import { getFetchApi } from "./api.js";
+import { getFetchApi } from "./Api.js";
 import { renderLogin } from "./loginPage.js";
 import { renderComms } from "./renderComments.js";
 

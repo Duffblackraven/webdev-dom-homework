@@ -1,4 +1,4 @@
-import { postFetchApi, token, userName } from "./api.js"
+import { postFetchApi, token, userName } from "./Api.js"
 import { likeEventButton } from "./like.js";
 import { renderLogin } from "./loginPage.js";
 import { formatedDate, getRenderComments } from "./main.js";
@@ -28,6 +28,10 @@ export const renderComms = ({ comments }) => {
       </li>`;
     })
     .join('');
+
+ //   const listHtml = `<ul id="ul" class="comments">
+//    ${commentsHtml}</ul>`
+//  appElement.innerHTML = listHtml;
 
     const appHtml = `
   <div class="container">
@@ -77,15 +81,22 @@ export const renderComms = ({ comments }) => {
   addCommentButton.addEventListener("click", () => {
 
     nameInput.classList.remove("error");
+    console.log(nameInput.value);
+    console.log(textInput.value);
     textInput.classList.remove("error");
     if (nameInput.value === "") {
+      console.log(nameInput.value);
+      console.log(textInput.value);
       nameInput.classList.add("error");
       return;
     }
     if (textInput.value === "") {
+      console.log(nameInput.value);
+      console.log(textInput.value);
       textInput.classList.add("error");
       return;
     }
+
 
   
     addLoaderComment.style.display = true;
