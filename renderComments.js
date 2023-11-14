@@ -29,9 +29,6 @@ export const renderComms = ({ comments }) => {
     })
     .join('');
 
- //   const listHtml = `<ul id="ul" class="comments">
-//    ${commentsHtml}</ul>`
-//  appElement.innerHTML = listHtml;
 
     const appHtml = `
   <div class="container">

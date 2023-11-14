@@ -11,7 +11,7 @@ export const renderReg = () => {
             <h3 class="login-name">Форма регистрации</h3>
             <input id="name-input" type="text" class="add-form-name" placeholder="Введите имя"/>
             <input id="login-input" type="text" class="add-form-name add-form-name-login" placeholder="Введите логин"/>
-            <textarea id="password-input" type="textarea" class="add-form-text add-form-text-login" placeholder="Введите пароль" rows="4"></textarea>
+            <input id="password-input" type="password" class="add-form-text add-form-text-login" placeholder="Введите пароль" rows="4"></input>
           <div class="add-form-row add-form-row-login">
             <button id="register-button" class="add-form-button add-form-button-login">Зарегистрироваться</button>
           </div>
