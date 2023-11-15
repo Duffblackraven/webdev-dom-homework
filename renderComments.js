@@ -64,7 +64,7 @@ export const renderComms = ({ comments }) => {
   })
   
 
-
+  
 
   const addCommentButton = document.getElementById("comment-button");
   const nameInput = document.getElementById("name-input");
@@ -72,72 +72,70 @@ export const renderComms = ({ comments }) => {
   const addLoaderComment = document.getElementById('add-loader-comment');
 
 
+  addLoaderComment.style.display = 'none';
 
-  document.getElementById("add-loader-comment").style.display = 'none';
+  if (token) {
+    addCommentButton.addEventListener("click", () => {
 
-  addCommentButton.addEventListener("click", () => {
-
-    nameInput.classList.remove("error");
-    console.log(nameInput.value);
-    console.log(textInput.value);
-    textInput.classList.remove("error");
-    if (nameInput.value === "") {
-      console.log(nameInput.value);
-      console.log(textInput.value);
-      nameInput.classList.add("error");
-      return;
-    }
-    if (textInput.value === "") {
-      console.log(nameInput.value);
-      console.log(textInput.value);
-      textInput.classList.add("error");
-      return;
-    }
-
-
+      nameInput.classList.remove("error");
+    
+      textInput.classList.remove("error");
+      if (nameInput.value === "") {
+      
+        nameInput.classList.add("error");
+        return;
+      }
+      if (textInput.value === "") {
   
-    addLoaderComment.style.display = true;
-    document.getElementById("add-loader-comment").style.display = 'block';
+        textInput.classList.add("error");
+        return;
+      }
+  
+  
     
-    
-    const postTask = () => {
-    postFetchApi({ 
-      text: textInput.value,
-      name: nameInput.value,
-      date: formatedDate
-     })
-     .then(() => {
-      return getRenderComments({ comments });
-    })
-    .then(() => {
-      document.getElementById("add-form").style.display = 'flex';
-      document.getElementById("add-loader-comment").style.display = 'none';
-
-      nameInput.value = ""
-      textInput.value = ""
-    })
-    .catch((error) => {
-      document.getElementById("add-form").style.display = 'flex';
-      document.getElementById("add-loader-comment").style.display = 'none';
-        if (error.message === "Сервер сломался") {
-          alert('Ошибка на сервере, возвращайтесь позже');
-        }
-        if (error.message === "Плохой запрос") {
-          alert('Ошибка колличества символов в имени/комментарии... Пожалуйста, введите не менее 3х символов');
-        }
-        else {
-          alert("Ошибка интернет соединения, попробуйте позже")
-        }
-        
-        console.log(error);
-      });
-    }
-    
-    postTask();
-    renderComms({ comments });  
-
-  });
-
+      addLoaderComment.style.display = true;
+      document.getElementById("add-loader-comment").style.display = 'block';
+      
+      
+      const postTask = () => {
+      postFetchApi({ 
+        text: textInput.value,
+        name: nameInput.value,
+        date: formatedDate
+       })
+       .then(() => {
+        return getRenderComments({ comments });
+      })
+      .then(() => {
+        document.getElementById("add-form").style.display = 'flex';
+        document.getElementById("add-loader-comment").style.display = 'none';
+  
+        nameInput.value = ""
+        textInput.value = ""
+      })
+      .catch((error) => {
+        document.getElementById("add-form").style.display = 'flex';
+        document.getElementById("add-loader-comment").style.display = 'none';
+          if (error.message === "Сервер сломался") {
+            alert('Ошибка на сервере, возвращайтесь позже');
+          }
+          if (error.message === "Плохой запрос") {
+            alert('Ошибка колличества символов в имени/комментарии... Пожалуйста, введите не менее 3х символов');
+          }
+          else {
+            alert("Ошибка интернет соединения, попробуйте позже")
+          }
+          
+          console.log(error);
+        });
+      }
+      
+      postTask();
+      renderComms({ comments });  
+  
+    });
+  
+  }
  
    
   const styleQuote = document.querySelector(".quote");
