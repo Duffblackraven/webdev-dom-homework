@@ -36,4 +36,3 @@ import { renderComms } from "./renderComments.js";
     };
 
     getRenderComments();
-    renderLogin({ getRenderComments });
