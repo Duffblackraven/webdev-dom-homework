@@ -1,34 +1,105 @@
+const baseURL = "https://wedev-api.sky.pro/api/v2/tatiana-ret/comments";
+const authorizURL = "https://wedev-api.sky.pro/api/user/login";
+const regURL = "https://wedev-api.sky.pro/api/user";
 
-export const getFetchApi = () => {
-  return fetch("https://wedev-api.sky.pro/api/v1/tatiana-ret/comments", {
-
-      method: "GET"
-  })
-  
-  .then((response) => {
-  if (response.status === 500) {
-    throw new Error('Ошибка на сервере')
-  }
-    return response.json();
-  });
+export let userName;
+export const setUserName = (newUserName) => {
+  userName = newUserName;
 };
 
-export const postFetchApi = (nameEl, textEl) => {
-return fetch("https://wedev-api.sky.pro/api/v1/tatiana-ret/comments", {
+export let token;
+export const setToken = (newToken) => {
+   token = newToken;
+};
 
-    method: "POST",
-    body: JSON.stringify({
-    name: nameEl.value
+export const getFetchApi = () => {
+    return fetch(baseURL, {
+      method: "GET",
+      headers: {
+         Authorization: `Bearer ${token}`,
+       },
+    }).then((response) => {
+      if (response.status === 401) {
+         token = prompt("Введите верный пароль");
+         getFetchApi();
+         throw new Error("Вы не авторизованы");
+       }
+       return response.json();
+     });
+}
+
+export const postFetchApi = ({ text, name, date }) => {
+   return fetch(baseURL, {
+      method: "POST",
+      body: JSON.stringify({
+      name: name
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;"),
+        date: date,
+        text: text
         .replaceAll("&", "&amp;")
         .replaceAll("<", "&lt;")
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;"),
-    text: textEl.value
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;"),
-    forceError: true
-        }),
-    });
+        Likes: 0,
+        isLiked: false,
+      }),
+      headers: {
+         Authorization: `Bearer ${token}`,
+       },
+      })
+      .then((response) => {
+          console.log(response);
+          if (response.status === 500) {
+            alert("Сервер сломался")
+             throw new Error("Сервер сломался");
+          }
+          if (response.status === 400) {
+            alert("Плохой запрос")
+             throw new Error("Плохой запрос");
+          }
+          else {
+          return response.json();
+          }
+        });
+}
+
+export const login = ({ login, password }) => {
+   return fetch(authorizURL, {
+      method: "POST",
+      body: JSON.stringify({
+      login,
+      password,
+      }),
+   })
+   .then((response) => {
+      console.log(response)
+      if (response.status === 400) {
+        alert("Неправильный логин или пароль")
+         throw new Error("Неправильный логин или пароль");
+      } 
+         return response.json();
+   });
+};
+
+export const registration = ({ login, password, name }) => {
+   return fetch(regURL, {
+      method: "POST",
+      body: JSON.stringify({
+      login,
+      name,
+      password,
+      }),
+   })
+   .then((response) => {
+      console.log(response)
+      if (response.status === 400) {
+        alert("Неверные данные")
+         throw new Error("Неверные данные");
+         
+      } 
+         return response.json();
+   });
 };
